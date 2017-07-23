@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <bean id="knight" class="com.mors741.knight.BraveKnight" c:_0-ref="questList"/>
+    <bean id="princessQuest" class="com.mors741.knight.PrincessSavingQuest" c:_0="#{T(System).out}"/>
+    <bean id="dragonQuest" class="com.mors741.knight.DragonSlayingQuest" p:stream="#{T(System).out}"/>
+    <bean id="minstrel" class="com.mors741.knight.Minstrel" c:_0="#{T(System).out}"/>
+    <bean id="spear" class="com.mors741.knight.Spear" c:_0="#{21+29}" c:_1="${spear.name}"/>
+    <aop:config>
+        <aop:aspect ref="minstrel">
+            <aop:pointcut id="embark" expression="execution(* com.mors741.knight.Knight.embarkOnQuest(int)) and args(d)"/>
+            <aop:before pointcut-ref="embark" method="singBeforeQuest"/>
+            <aop:after pointcut-ref="embark" method="singAfterQuest"/>
+        </aop:aspect>
+    </aop:config>
+    <util:list id="questList">
+        <ref bean="princessQuest"/>
+        <ref bean="dragonQuest"/>
+        <ref bean="dragonQuest"/>
+    </util:list>
+
+    <context:property-placeholder />
+
+
+</beans>
